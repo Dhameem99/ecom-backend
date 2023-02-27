@@ -3,7 +3,7 @@ const cors = require('cors');
 const app = express();
 const http = require('http');
 require('dotenv').config();
-const stripe = require('stripe')(process.env.STRIPE_SECRET);
+const stripe = require('stripe')("sk_test_51MgAS0SCDv6Tx1WKz0kFvehFImGBIR5ajzAa3znISkPbAOuBgbsU3RTm6F4AAI8t8EucelN4SwvmDswknEujzYjL00lIRgHreo");
 require('./connection')
 const server = http.createServer(app);
 const {Server} = require('socket.io');
@@ -29,12 +29,14 @@ app.use('/images', imageRoutes);
 
 
 app.post('/create-payment', async(req, res)=> {
+  console.log(req)
+  console.log(req.body)
   const {amount} = req.body;
   console.log(amount);
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
-      currency: 'usd',
+      currency: 'inr',
       payment_method_types: ['card']
     });
     res.status(200).json(paymentIntent)
